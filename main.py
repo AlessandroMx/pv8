@@ -6,10 +6,12 @@ class Matrix(object):
     Class that defines the matrix structure and some methods to interact with them.
     '''
 
-    def __init__(self, size, define_it=False):
+    def __init__(self, size, input_matrix=[]):
         self.size = size
-        self.matrix = None
-        self.create_matrix_manually() if define_it else self.generate_matrix()
+        if input_matrix == []:
+            self.generate_matrix()
+        else:
+            self.matrix = input_matrix
 
     def __str__(self):
         matrix_string = ''
@@ -31,14 +33,30 @@ class Matrix(object):
         min_num = None
         min_counter = 0
         for key, value in numbers.items():
-            min_num = key if min_num == None or value > min_counter and key < min_num else min_num
+            if min_num == None:
+                min_num = key
+                min_counter = value
+            elif value > min_counter:
+                min_num = key
+                min_counter = value
+            elif value == min_counter and key < min_num:
+                min_num = key
+                min_counter = value
         return min_num
 
     def max_algorithm(self, numbers):
         max_num = None
         max_counter = 0
         for key, value in numbers.items():
-            max_num = key if max_num == None or value > max_counter and key > max_num else max_num
+            if max_num == None:
+                max_num = key
+                max_counter = value
+            elif value > max_counter:
+                max_num = key
+                max_counter = value
+            elif value == max_counter and key > max_num:
+                max_num = key
+                max_counter = value
         return max_num
 
     def travel_neighbors(self, x, y):
@@ -70,8 +88,12 @@ class Matrix(object):
                 tmp_max_row.append(self.max_algorithm(numbers))
             min_algorithm_matrix.append(tmp_min_row)
             max_algorithm_matrix.append(tmp_max_row)
-        print(min_algorithm_matrix)
-        print(max_algorithm_matrix)
+        min_matrix = Matrix(size=len(min_algorithm_matrix[0]), input_matrix=min_algorithm_matrix)
+        max_matrix = Matrix(size=len(max_algorithm_matrix[0]), input_matrix=max_algorithm_matrix)
+        print('Algoritmo con valores mínimos: \n')
+        print(min_matrix)
+        print('Algoritmo con valores máximos: \n')
+        print(max_matrix)
 
 
 if __name__ == '__main__':
